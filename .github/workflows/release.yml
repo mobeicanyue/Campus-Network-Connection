@@ -14,32 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Go
+      - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: "stable"
 
-      - name: Install Goreleaser
-        run: |
-          echo 'deb [trusted=yes] https://repo.goreleaser.com/apt/ /' | sudo tee /etc/apt/sources.list.d/goreleaser.list
-          sudo apt update
-          sudo apt install goreleaser
-          goreleaser --version
-
-      - name: Build Release
-        run: |
-          goreleaser release --skip=publish --clean
-          mkdir dist/release
-          mv dist/*.tar.gz dist/*.zip dist/release
+      - name: Set up and run Goreleaser
+        uses: goreleaser/goreleaser-action@v5
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List files in working directory
         run: ls -R
-
-      - name: Publish
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: |
-            dist/release/*
-          generate_release_notes: true
-          draft: true

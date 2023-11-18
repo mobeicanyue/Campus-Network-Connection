@@ -31,9 +31,6 @@ builds:
       - darwin_amd64_v3
       - darwin_arm64
 
-snapshot:
-  name_template: "{{ .Version }}.{{ .ShortCommit }}"
-
 archives:
   - builds:
       - main
@@ -41,14 +38,22 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
-    wrap_in_directory: true
     files:
       - LICENSE
     name_template: '{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}'
-source:
-  enabled: false
-  name_template: '{{ .ProjectName }}-{{ .Version }}.source'
-  prefix_template: '{{ .ProjectName }}-{{ .Version }}/'
+
 checksum:
-  disable: true
-  name_template: '{{ .ProjectName }}-{{ .Version }}.checksum'
+  name_template: "checksums.txt"
+
+changelog:
+  use: github
+  sort: asc
+
+release:
+  github:
+    owner: mobeicanyue
+    name: Campus-Network-Connection
+  name_template: "Campus-Network-Connection-{{.Tag}}"
+  draft: true
+  replace_existing_draft: true
+  mode: append
