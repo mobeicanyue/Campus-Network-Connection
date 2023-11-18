@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
@@ -80,8 +80,7 @@ func main() {
 }
 
 func getFilename() string {
-	args := os.Args
-	filename := path.Base(args[0])
+	filename := filepath.Base(os.Args[0])
 	if isWindows() {
 		// Windows系统下去掉.exe后缀
 		filename = strings.TrimSuffix(filename, ".exe")
