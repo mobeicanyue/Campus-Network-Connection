@@ -43,13 +43,13 @@ archives:
     name_template: '{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}'
 
 checksum:
-  name_template: "{{ .Version }}-checksums.txt"
+  name_template: "{{ .Tag }}-checksums.txt"
 
 release:
   github:
     owner: mobeicanyue
     name: Campus-Network-Connection
-  name_template: "{{ .ProjectName }}--{{.Tag}}"
+  name_template: "{{ .ProjectName }}-{{.Tag}}"
   draft: true
   replace_existing_draft: true
   mode: append
