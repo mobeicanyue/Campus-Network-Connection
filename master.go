@@ -62,11 +62,11 @@ func main() {
 			body, err := io.ReadAll(response.Body)
 			if err != nil {
 				fmt.Printf("Error reading response body: %v\n", err)
+				time.Sleep(failureWaitTime * time.Second)
 				return
 			}
 
 			// 处理 JSON 数据
-			// TODO: 实现 extractJSONData 函数
 			msg := extractJSONData(string(body))
 			fmt.Printf("json.msg: \033[0;37;41m%s\033[0m\n", msg)
 			time.Sleep(2 * time.Second)
@@ -92,12 +92,14 @@ func extractIDAndPassword(filename string) (string, string) {
 	parts := strings.Split(filename, ";")
 	if len(parts) != 2 {
 		fmt.Println("\033[0;37;41m Please make sure your id and password are separated by ';'. \033[0m")
+		time.Sleep(failureWaitTime * time.Second)
 		os.Exit(1)
 	}
 
 	id, passwd := parts[0], parts[1]
 	if len(id) != 13 || !isNumeric(id) {
 		fmt.Println("ID must be a 13-digit number.")
+		time.Sleep(failureWaitTime * time.Second)
 		os.Exit(1)
 	}
 
