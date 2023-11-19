@@ -117,7 +117,7 @@ func isNumeric(s string) bool {
 
 func isWindows() bool {
 	// 简化处理，假定Windows系统的可执行文件后缀是".exe"
-	return strings.HasSuffix(os.Args[0], ".exe")
+	return strings.HasSuffix(filepath.Base(os.Args[0]), ".exe")
 }
 
 func extractJSONData(responseText string) string {
